@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Schedule</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        td.editable {
+            cursor: text;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weekly Schedule</h1>
+    <table>
+        <tr>
+            <th>TIME</th>
+            <th data-time="Monday">Monday</th>
+            <th data-time="Tuesday">Tuesday</th>
+            <th data-time="Wednesday">Wednesday</th>
+            <th data-time="Thursday">Thursday</th>
+            <th data-time="Friday">Friday</th>
+        </tr>
+        <tr>
+            <td data-time="9:00 - 10:00">9:00 - 10:00</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">English</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">History</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">German</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">Technology</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">Technology</td>
+        </tr>
+        <tr>
+            <td data-time="10:00 - 11:00">10:00 - 11:00</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">Mathematics</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">PE</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">English</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">Latin</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">History</td>
+        </tr>
+        <tr>
+            <td data-time="11:00 - 12:00">11:00 - 12:00</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">Spanish</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">Spanish</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">Economy</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">Mathematics</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">Latin</td>
+        </tr>
+        <tr>
+            <td data-time="12:00 - 12:30">12:00 - 12:30</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">RECREO</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">RECREO</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">RECREO</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">RECREO</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">RECREO</td>
+        </tr>
+        <tr>
+            <td data-time="12:30 - 13:20">12:30 - 13:20</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">History</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">Mathematics</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">Valores</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">Economy</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">English</td>
+        </tr>
+        <tr>
+            <td data-time="13:20 - 14:10">13:20 - 14:10</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">German</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">Economy</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">PE</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">English</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">German</td>
+        </tr>
+        <tr>
+            <td data-time="14:10 - 15:00">14:10 - 15:00</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">COMEDOR</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">COMEDOR</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">COMEDOR</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">COMEDOR</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">COMEDOR</td>
+        </tr>
+        <tr>
+            <td data-time="15:00 - 16:00">15:00 - 16:00</td>
+            <td class="editable" data-day="Monday" contenteditable oninput="updateRow(this)">Latin</td>
+            <td class="editable" data-day="Tuesday" contenteditable oninput="updateRow(this)">Technology</td>
+            <td class="editable" data-day="Wednesday" contenteditable oninput="updateRow(this)">Mathematics</td>
+            <td class="editable" data-day="Thursday" contenteditable oninput="updateRow(this)">Tutor</td>
+            <td class="editable" data-day="Friday" contenteditable oninput="updateRow(this)">Spanish</td>
+        </tr>
+    </table>
+    <button onclick="saveToLocalStorage()">Save as CSV to Local Storage</button>
+
+    <script>
+        function updateRow(cell) {
+            const value = cell.innerText.toLowerCase();
+            const day = cell.dataset.day;
+
+            // Check if the entered value is 'recreo' or 'comedor' (case-insensitive)
+            if (value === 'recreo' || value === 'comedor') {
+                const tableRows = document.querySelectorAll('table tr');
+                for (let i = 1; i < tableRows.length; i++) {
+                    const rowCells = tableRows[i].cells;
+                    const time = rowCells[0].dataset.time;
+                    for (let j = 1; j < rowCells.length; j++) {
+                        const cellDay = rowCells[j].dataset.day;
+                        if (cellDay === day) {
+                            rowCells[j].innerText = value.toUpperCase();
+                        }
+                    }
+                }
+            }
+        }
+
+        function saveToLocalStorage() {
+            let csvContent = "day,class_name,start_time,end_time\n";
+            const tableRows = document.querySelectorAll('table tr');
+
+            for (let i = 1; i < tableRows.length; i++) {
+                const rowCells = tableRows[i].cells;
+                const time = rowCells[0].dataset.time;
+                const day = rowCells[0].getAttribute('data-day'); // Access the data-time attribute
+
+                for (let j = 1; j < rowCells.length; j++) {
+                    const className = rowCells[j].innerText;
+                    csvContent += `${data-day},${className},${time}\n`;
+                }
+            }
+
+            localStorage.setItem('scheduleData', csvContent);
+            alert('Schedule data has been saved to Local Storage.');
+        }
+    </script>
+</body>
+</html>

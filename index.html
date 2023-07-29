@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>What class is next?</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
+  </head>
+  
+  <body>
+    {% if next_class %}
+      <p class="current-class">You have {{ next_class }} next!</p>
+    {% else %}
+      <p class="no-class">You don't have any class.</p>
+    {% endif %}
+
+    <a href="/timetable/" class="button">Timetable</a>
+    <a href="/about/" class="button2">About</a>
+    <a href="/notepads" class="button3">Notepad</a>
+  </body>
+</html>
